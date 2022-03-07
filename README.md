@@ -2,17 +2,8 @@
 
 [![GitHub Build Status](https://github.com/cisagov/instance-cw-alarms-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/instance-cw-alarms-tf-module/actions)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) [Terraform
-module](https://www.terraform.io/docs/modules/index.html) GitHub
-repository started.  This skeleton project contains [licensing
-information](LICENSE), as well as [pre-commit
-hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for the major languages that we use.
-
-See [here](https://www.terraform.io/docs/modules/index.html) for more
-details on Terraform modules and the standard module structure.
+A Terraform module for creating a set of standard CloudWatch alarms
+for EC2 instances.
 
 ## Usage ##
 
@@ -20,9 +11,10 @@ details on Terraform modules and the standard module structure.
 module "example" {
   source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
-  aws_region            = "us-west-1"
-  aws_availability_zone = "b"
-  subnet_id             = "subnet-0123456789abcdef0"
+  alarm_actions             = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
+  instance_ids              = ["id-0123456789abcdef0", "id-0123456789abcdef1"]
+  insufficient_data_actions = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
+  ok_actions                = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
 }
 ```
 
@@ -51,41 +43,30 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_instance.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
-| [aws_ami.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
-| [aws_default_tags.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
+| [aws_cloudwatch_metric_alarm.instance_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.system_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| ami\_owner\_account\_id | The ID of the AWS account that owns the Example AMI, or "self" if the AMI is owned by the same account as the provisioner. | `string` | `"self"` | no |
-| aws\_availability\_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.). | `string` | `"a"` | no |
-| aws\_region | The AWS region to deploy into (e.g. us-east-1). | `string` | `"us-east-1"` | no |
-| subnet\_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
+| alarm\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the ALARM state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
+| instance\_ids | A list of AWS EC2 instance IDs that are to be monitored (e.g. [id-0123456789abcdef0, id-0123456789abcdef1]). | `list(string)` | n/a | yes |
+| insufficient\_data\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the INSUFFICIENT\_DATA state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
+| ok\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the OK state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| arn | The EC2 instance ARN. |
-| availability\_zone | The AZ where the EC2 instance is deployed. |
-| id | The EC2 instance ID. |
-| private\_ip | The private IP of the EC2 instance. |
-| subnet\_id | The ID of the subnet where the EC2 instance is deployed. |
+| instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
+| system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 
 ## Notes ##
 
 Running `pre-commit` requires running `terraform init` in every directory that
 contains Terraform code. In this repository, these are the main directory and
 every directory under `examples/`.
-
-## New Repositories from a Skeleton ##
-
-Please see our [Project Setup guide](https://github.com/cisagov/development-guide/tree/develop/project_setup)
-for step-by-step instructions on how to start a new repository from
-a skeleton. This will save you time and effort when configuring a
-new repository!
 
 ## Contributing ##
 
