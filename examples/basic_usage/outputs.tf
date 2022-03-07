@@ -1,24 +1,19 @@
-output "arn" {
-  value       = module.example.arn
-  description = "The EC2 instance ARN."
+output "instance" {
+  value       = aws_instance.mine
+  description = "The EC2 instance."
 }
 
-output "availability_zone" {
-  value       = module.example.availability_zone
-  description = "The AZ where the EC2 instance is deployed."
+output "topic" {
+  value       = aws_sns_topic.alarm_updates
+  description = "The SNS topic."
 }
 
-output "id" {
-  value       = module.example.id
-  description = "The EC2 instance ID."
+output "system_status_check" {
+  value       = module.alarms.system_status_check
+  description = "CloudWatch alarms that monitor EC2 system status checks."
 }
 
-output "private_ip" {
-  value       = module.example.private_ip
-  description = "The private IP of the EC2 instance."
-}
-
-output "subnet_id" {
-  value       = module.example.subnet_id
-  description = "The ID of the subnet where the EC2 instance is deployed."
+output "instance_status_check" {
+  value       = module.alarms.instance_status_check
+  description = "CloudWatch alarms that monitor EC2 instance status checks."
 }
