@@ -1,3 +1,8 @@
+output "cpu_utilization" {
+  value       = aws_cloudwatch_metric_alarm.cpu_utilization
+  description = "CloudWatch alarms that monitor EC2 CPU utilization."
+}
+
 output "imdsv1_request" {
   value       = aws_cloudwatch_metric_alarm.imdsv1_request
   description = "CloudWatch alarms that trigger on EC2 IMDSv1 requests."

@@ -66,8 +66,28 @@ resource "aws_cloudwatch_metric_alarm" "imdsv1_request" {
   metric_name               = "MetadataNoToken"
   namespace                 = "AWS/EC2"
   ok_actions                = var.ok_actions
-  # This is the minimum value for alarms in the AWS namespace.
-  period    = 60
+  # This metric does not need to be tracked minute to minute.
+  period    = 300
   statistic = "Maximum"
   threshold = 0
+}
+
+resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions       = var.alarm_actions
+  alarm_description   = "Monitor EC2 instance CPU utilization"
+  alarm_name          = "ec2_cpu_utilization_${each.value}"
+  comparison_operator = "GreaterThanThreshold"
+  dimensions = {
+    InstanceId = each.value
+  }
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_name               = "CPUUtilization"
+  namespace                 = "AWS/EC2"
+  ok_actions                = var.ok_actions
+  period                    = 300
+  statistic                 = "Maximum"
+  threshold                 = 90.0
 }
