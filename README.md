@@ -46,6 +46,7 @@ No modules.
 | [aws_cloudwatch_metric_alarm.cpu_utilization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.imdsv1_request](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.instance_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.memory_utilization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.system_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 
 ## Inputs ##
@@ -64,6 +65,7 @@ No modules.
 | cpu\_utilization | CloudWatch alarms that monitor EC2 CPU utilization. |
 | imdsv1\_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
 | instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
+| memory\_utilization | CloudWatch alarms that monitor EC2 memory utilization. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 
 ## Notes ##

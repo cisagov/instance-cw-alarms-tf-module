@@ -13,6 +13,11 @@ output "instance_status_check" {
   description = "CloudWatch alarms that monitor EC2 instance status checks."
 }
 
+output "memory_utilization" {
+  value       = aws_cloudwatch_metric_alarm.memory_utilization
+  description = "CloudWatch alarms that monitor EC2 memory utilization."
+}
+
 output "system_status_check" {
   value       = aws_cloudwatch_metric_alarm.system_status_check
   description = "CloudWatch alarms that monitor EC2 system status checks."

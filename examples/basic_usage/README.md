@@ -51,5 +51,6 @@ Note that this example may create resources which cost money. Run
 | imdsv1_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
 | instance | The EC2 instance. |
 | instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
+| memory\_utilization | CloudWatch alarms that monitor EC2 memory utilization. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 | topic | The SNS topic. |
