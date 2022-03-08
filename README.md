@@ -44,6 +44,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [aws_cloudwatch_metric_alarm.instance_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.metadata_no_token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 | [aws_cloudwatch_metric_alarm.system_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 
 ## Inputs ##
@@ -59,6 +60,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| imdsv1_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
 | instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 

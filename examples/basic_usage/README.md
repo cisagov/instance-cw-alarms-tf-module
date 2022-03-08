@@ -33,8 +33,6 @@ Note that this example may create resources which cost money. Run
 |------|------|
 | [aws_instance.mine](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_sns_topic.alarm_updates](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
-| [aws_subnet.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_vpc.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 
 ## Inputs ##
@@ -49,6 +47,7 @@ Note that this example may create resources which cost money. Run
 
 | Name | Description |
 |------|-------------|
+| imdsv1_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
 | instance | The EC2 instance. |
 | instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |

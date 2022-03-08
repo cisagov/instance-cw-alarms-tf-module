@@ -1,0 +1,73 @@
+# ------------------------------------------------------------------------------
+# Create a set of standard CloudWatch alarms for an EC2 instance.
+# ------------------------------------------------------------------------------
+
+resource "aws_cloudwatch_metric_alarm" "system_status_check" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 system status check"
+  alarm_name                = "ec2_system_status_check_${each.value}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "system_status_check"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "StatusCheckFailed_System"
+      namespace   = "AWS/EC2"
+      period      = 60
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
+
+resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions       = var.alarm_actions
+  alarm_description   = "Monitor EC2 instance status check"
+  alarm_name          = "ec2_instance_status_check_${each.value}"
+  comparison_operator = "GreaterThanThreshold"
+  dimensions = {
+    InstanceId = each.value
+  }
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_name               = "StatusCheckFailed_Instance"
+  namespace                 = "AWS/EC2"
+  ok_actions                = var.ok_actions
+  # This is the minimum value for alarms in the AWS namespace.
+  period    = 60
+  statistic = "Maximum"
+  threshold = 0
+}
+
+# This alarm should never go off if all instances are correctly
+# configured to use IMDSv2 only.
+resource "aws_cloudwatch_metric_alarm" "imdsv1_request" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions       = var.alarm_actions
+  alarm_description   = "Monitor EC2 instance MetadataNoToken metric"
+  alarm_name          = "ec2_metadata_no_token_${each.value}"
+  comparison_operator = "GreaterThanThreshold"
+  dimensions = {
+    InstanceId = each.value
+  }
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_name               = "MetadataNoToken"
+  namespace                 = "AWS/EC2"
+  ok_actions                = var.ok_actions
+  # This is the minimum value for alarms in the AWS namespace.
+  period    = 60
+  statistic = "Maximum"
+  threshold = 0
+}
