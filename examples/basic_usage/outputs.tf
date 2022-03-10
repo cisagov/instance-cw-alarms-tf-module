@@ -3,6 +3,11 @@ output "cpu_utilization" {
   description = "CloudWatch alarms that monitor EC2 CPU utilization."
 }
 
+output "disk_utilization" {
+  value       = module.alarms.disk_utilization
+  description = "CloudWatch alarms that monitor EC2 disk utilization."
+}
+
 output "imdsv1_request" {
   value       = module.alarms.imdsv1_request
   description = "CloudWatch alarms that trigger on EC2 IMDSv1 requests."
