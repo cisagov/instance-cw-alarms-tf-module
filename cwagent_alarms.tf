@@ -56,3 +56,146 @@ resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
   ok_actions = var.ok_actions
   threshold  = 90.0
 }
+
+# Alarm if any packets are queued and/or dropped because the inbound
+# aggregate bandwidth exceeded the maximum for the instance.
+resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 instance inbound bandwidth allowance"
+  alarm_name                = "bw_in_allowance_exceeded_${each.key}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "bw_in_allowance_exceeded"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "ethtool_bw_in_allowance_exceeded"
+      namespace   = "CWAgent"
+      period      = 300
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
+
+# Alarm if any packets are queued and/or dropped because the outbound
+# aggregate bandwidth exceeded the maximum for the instance.
+resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 instance outbound bandwidth allowance"
+  alarm_name                = "bw_out_allowance_exceeded_${each.key}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "bw_out_allowance_exceeded"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "ethtool_bw_out_allowance_exceeded"
+      namespace   = "CWAgent"
+      period      = 300
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
+
+# Alarm if any packets are dropped because connection tracking
+# exceeded the maximum for the instance and new connections could not
+# be established.
+resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 instance conntrack allowance"
+  alarm_name                = "conntrack_allowance_exceeded_${each.key}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "conntrack_allowance_exceeded"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "ethtool_conntrack_allowance_exceeded"
+      namespace   = "CWAgent"
+      period      = 300
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
+
+# Alarm if any packets are dropped because the PPS of the traffic to
+# local proxy services exceeded the maximum for the network
+# interface. This impacts traffic to the DNS service, the Instance
+# Metadata Service, and the Amazon Time Sync Service.
+resource "aws_cloudwatch_metric_alarm" "linklocal_allowance_exceeded" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 instance linklocal allowance"
+  alarm_name                = "linklocal_allowance_exceeded_${each.key}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "linklocal_allowance_exceeded"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "ethtool_linklocal_allowance_exceeded"
+      namespace   = "CWAgent"
+      period      = 300
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
+
+# Alarm if any packets are queued and/or dropped because the
+# bidirectional PPS exceeded the maximum for the instance.
+resource "aws_cloudwatch_metric_alarm" "pps_allowance_exceeded" {
+  for_each = toset(var.instance_ids)
+
+  alarm_actions             = var.alarm_actions
+  alarm_description         = "Monitor EC2 instance PPS allowance"
+  alarm_name                = "pps_allowance_exceeded_${each.key}"
+  comparison_operator       = "GreaterThanThreshold"
+  evaluation_periods        = 1
+  insufficient_data_actions = var.insufficient_data_actions
+  metric_query {
+    id = "pps_allowance_exceeded"
+    metric {
+      dimensions = {
+        InstanceId = each.value
+      }
+      metric_name = "ethtool_pps_allowance_exceeded"
+      namespace   = "CWAgent"
+      period      = 300
+      stat        = "Maximum"
+    }
+    return_data = true
+  }
+  ok_actions = var.ok_actions
+  threshold  = 0
+}
