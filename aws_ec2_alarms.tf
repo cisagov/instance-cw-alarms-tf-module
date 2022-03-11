@@ -2,6 +2,7 @@
 # Create a set of standard CloudWatch alarms for an EC2 instance.
 # ------------------------------------------------------------------------------
 
+# Alarm if a system status check ever fails.
 resource "aws_cloudwatch_metric_alarm" "system_status_check" {
   for_each = toset(var.instance_ids)
 
@@ -28,6 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "system_status_check" {
   threshold  = 0
 }
 
+# Alarm if an instance status check ever fails.
 resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
   for_each = toset(var.instance_ids)
 
@@ -54,6 +56,8 @@ resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
   threshold  = 0
 }
 
+# Alarm is an IMDSv1 request ever succeeds.
+#
 # This alarm should never go off if all instances are correctly
 # configured to use IMDSv2 only.
 resource "aws_cloudwatch_metric_alarm" "imdsv1_request" {
