@@ -30,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
   threshold  = var.memory_utilization_alarm_parameters.threshold
 }
 
-# Alarm for disk utilization
+# Alarm for disk utilization.
 resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
   for_each = var.disk_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
