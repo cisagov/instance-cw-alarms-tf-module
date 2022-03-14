@@ -2,16 +2,16 @@
 # Create a set of standard CloudWatch alarms for an EC2 instance.
 # ------------------------------------------------------------------------------
 
-# Alarm if we have 30 straight minutes of over 90% memory utilization.
+# Alarm for memory utilization.
 resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
-  for_each = toset(var.instance_ids)
+  for_each = var.memory_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance memory utilization"
   alarm_name                = "ec2_memory_utilization_${each.value}"
   comparison_operator       = "GreaterThanThreshold"
-  datapoints_to_alarm       = 6
-  evaluation_periods        = 6
+  datapoints_to_alarm       = var.memory_utilization_alarm_parameters.datapoints_to_alarm
+  evaluation_periods        = var.memory_utilization_alarm_parameters.evaluation_periods
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
     id = "memory_utilization"
@@ -21,24 +21,25 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
       }
       metric_name = "mem_used_percent"
       namespace   = "CWAgent"
-      period      = 300
-      stat        = "Maximum"
+      period      = var.memory_utilization_alarm_parameters.period
+      stat        = var.memory_utilization_alarm_parameters.statistic
     }
     return_data = true
   }
   ok_actions = var.ok_actions
-  threshold  = 90.0
+  threshold  = var.memory_utilization_alarm_parameters.threshold
 }
 
-# Alarm if any disks ever reach 90% utilization.
+# Alarm for disk utilization
 resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
-  for_each = toset(var.instance_ids)
+  for_each = var.disk_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance disk utilization"
   alarm_name                = "ec2_disk_utilization_${each.key}"
   comparison_operator       = "GreaterThanThreshold"
-  evaluation_periods        = 1
+  datapoints_to_alarm       = var.disk_utilization_alarm_parameters.datapoints_to_alarm
+  evaluation_periods        = var.disk_utilization_alarm_parameters.evaluation_periods
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
     id = "disk_utilization"
@@ -48,17 +49,17 @@ resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
       }
       metric_name = "disk_used_percent"
       namespace   = "CWAgent"
-      period      = 300
-      stat        = "Maximum"
+      period      = var.disk_utilization_alarm_parameters.period
+      stat        = var.disk_utilization_alarm_parameters.statistic
     }
     return_data = true
   }
   ok_actions = var.ok_actions
-  threshold  = 90.0
+  threshold  = var.disk_utilization_alarm_parameters.threshold
 }
 
-# Alarm if any packets are queued and/or dropped because the inbound
-# aggregate bandwidth exceeded the maximum for the instance.
+# Alarm each time any packets are queued and/or dropped because the
+# inbound aggregate bandwidth exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
   for_each = toset(var.instance_ids)
 
@@ -90,8 +91,8 @@ resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
   threshold  = 0
 }
 
-# Alarm if any packets are queued and/or dropped because the outbound
-# aggregate bandwidth exceeded the maximum for the instance.
+# Alarm each time any packets are queued and/or dropped because the
+# outbound aggregate bandwidth exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
   for_each = toset(var.instance_ids)
 
@@ -123,7 +124,7 @@ resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
   threshold  = 0
 }
 
-# Alarm if any packets are dropped because connection tracking
+# Alarm each time any packets are dropped because connection tracking
 # exceeded the maximum for the instance and new connections could not
 # be established.
 resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
@@ -157,8 +158,8 @@ resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
   threshold  = 0
 }
 
-# Alarm if any packets are dropped because the PPS of the traffic to
-# local proxy services exceeded the maximum for the network
+# Alarm each time any packets are dropped because the PPS of the
+# traffic to local proxy services exceeded the maximum for the network
 # interface. This impacts traffic to the DNS service, the Instance
 # Metadata Service, and the Amazon Time Sync Service.
 resource "aws_cloudwatch_metric_alarm" "linklocal_allowance_exceeded" {

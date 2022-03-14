@@ -86,16 +86,16 @@ resource "aws_cloudwatch_metric_alarm" "imdsv1_request" {
   threshold  = 0
 }
 
-# Alarm if we have 30 straight minutes of over 90% CPU utilization.
+# Alarm for CPU utilization
 resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
-  for_each = toset(var.instance_ids)
+  for_each = var.cpu_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance CPU utilization"
   alarm_name                = "ec2_cpu_utilization_${each.value}"
   comparison_operator       = "GreaterThanThreshold"
-  datapoints_to_alarm       = 6
-  evaluation_periods        = 6
+  datapoints_to_alarm       = var.cpu_utilization_alarm_parameters.datapoints_to_alarm
+  evaluation_periods        = var.cpu_utilization_alarm_parameters.evaluation_periods
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
     id = "cpu_utilization"
@@ -105,11 +105,11 @@ resource "aws_cloudwatch_metric_alarm" "cpu_utilization" {
       }
       metric_name = "CPUUtilization"
       namespace   = "AWS/EC2"
-      period      = 300
-      stat        = "Maximum"
+      period      = var.cpu_utilization_alarm_parameters.period
+      stat        = var.cpu_utilization_alarm_parameters.statistic
     }
     return_data = true
   }
   ok_actions = var.ok_actions
-  threshold  = 90.0
+  threshold  = var.cpu_utilization_alarm_parameters.threshold
 }
