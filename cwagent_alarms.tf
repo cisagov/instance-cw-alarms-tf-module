@@ -69,17 +69,22 @@ resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
   evaluation_periods        = 1
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
-    id = "bw_in_allowance_exceeded"
+    id          = "bw_in_allowance_exceeded_rate"
+    expression  = "RATE(bw_in_allowance_exceeded_count)"
+    label       = "Inbound Bandwidth Allowance Exceeded Rate of Change"
+    return_data = true
+  }
+  metric_query {
+    id = "bw_in_allowance_exceeded_count"
     metric {
       dimensions = {
         InstanceId = each.value
       }
       metric_name = "ethtool_bw_in_allowance_exceeded"
       namespace   = "CWAgent"
-      period      = 300
+      period      = 60
       stat        = "Maximum"
     }
-    return_data = true
   }
   ok_actions = var.ok_actions
   threshold  = 0
@@ -97,17 +102,22 @@ resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
   evaluation_periods        = 1
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
-    id = "bw_out_allowance_exceeded"
+    id          = "bw_out_allowance_exceeded_rate"
+    expression  = "RATE(bw_out_allowance_exceeded_count)"
+    label       = "Outbound Bandwidth Allowance Exceeded Rate of Change"
+    return_data = true
+  }
+  metric_query {
+    id = "bw_out_allowance_exceeded_count"
     metric {
       dimensions = {
         InstanceId = each.value
       }
       metric_name = "ethtool_bw_out_allowance_exceeded"
       namespace   = "CWAgent"
-      period      = 300
+      period      = 60
       stat        = "Maximum"
     }
-    return_data = true
   }
   ok_actions = var.ok_actions
   threshold  = 0
@@ -126,17 +136,22 @@ resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
   evaluation_periods        = 1
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
-    id = "conntrack_allowance_exceeded"
+    id          = "conntrack_allowance_exceeded_rate"
+    expression  = "RATE(conntrack_allowance_exceeded_count)"
+    label       = "Conntrack Allowance Exceeded Rate of Change"
+    return_data = true
+  }
+  metric_query {
+    id = "conntrack_allowance_exceeded_count"
     metric {
       dimensions = {
         InstanceId = each.value
       }
       metric_name = "ethtool_conntrack_allowance_exceeded"
       namespace   = "CWAgent"
-      period      = 300
+      period      = 60
       stat        = "Maximum"
     }
-    return_data = true
   }
   ok_actions = var.ok_actions
   threshold  = 0
@@ -156,23 +171,28 @@ resource "aws_cloudwatch_metric_alarm" "linklocal_allowance_exceeded" {
   evaluation_periods        = 1
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
-    id = "linklocal_allowance_exceeded"
+    id          = "linklocal_allowance_exceeded_rate"
+    expression  = "RATE(linklocal_allowance_exceeded_count)"
+    label       = "Linklocal Allowance Exceeded Rate of Change"
+    return_data = true
+  }
+  metric_query {
+    id = "linklocal_allowance_exceeded_count"
     metric {
       dimensions = {
         InstanceId = each.value
       }
       metric_name = "ethtool_linklocal_allowance_exceeded"
       namespace   = "CWAgent"
-      period      = 300
+      period      = 60
       stat        = "Maximum"
     }
-    return_data = true
   }
   ok_actions = var.ok_actions
   threshold  = 0
 }
 
-# Alarm if any packets are queued and/or dropped because the
+# Alarm each time any packets are queued and/or dropped because the
 # bidirectional PPS exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "pps_allowance_exceeded" {
   for_each = toset(var.instance_ids)
@@ -184,17 +204,22 @@ resource "aws_cloudwatch_metric_alarm" "pps_allowance_exceeded" {
   evaluation_periods        = 1
   insufficient_data_actions = var.insufficient_data_actions
   metric_query {
-    id = "pps_allowance_exceeded"
+    id          = "pps_allowance_exceeded_rate"
+    expression  = "RATE(pps_allowance_exceeded_count)"
+    label       = "PPS Allowance Exceeded Rate of Change"
+    return_data = true
+  }
+  metric_query {
+    id = "pps_allowance_exceeded_count"
     metric {
       dimensions = {
         InstanceId = each.value
       }
       metric_name = "ethtool_pps_allowance_exceeded"
       namespace   = "CWAgent"
-      period      = 300
+      period      = 60
       stat        = "Maximum"
     }
-    return_data = true
   }
   ok_actions = var.ok_actions
   threshold  = 0
