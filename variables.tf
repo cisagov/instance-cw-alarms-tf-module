@@ -22,13 +22,13 @@ variable "alarm_actions" {
 
 variable "cpu_utilization_alarm_parameters" {
   type        = object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })
-  description = "An object containing the parameters for the CPU utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = \"Maximum\", threshold = 90.0}).  For an explanation of the parameters please see https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html.  The default is to alarm after 30 straight minutes of over 90% CPU utilization."
+  description = "An object containing the parameters for the CPU utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = \"Maximum\", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm after 30 straight minutes of over 90% CPU utilization."
   default     = { create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = "Maximum", threshold = 90.0 }
 }
 
 variable "disk_utilization_alarm_parameters" {
   type        = object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })
-  description = "An object containing the parameters for the disk utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 1, evaluation_periods = 1, period = 60, statistic = \"Maximum\", threshold = 90.0}).  For an explanation of the parameters please see https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html.  The default is to alarm for greater then 90% disk utilization."
+  description = "An object containing the parameters for the disk utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 1, evaluation_periods = 1, period = 60, statistic = \"Maximum\", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm for greater then 90% disk utilization."
   default     = { create_alarm = true, datapoints_to_alarm = 1, evaluation_periods = 1, period = 300, statistic = "Maximum", threshold = 90.0 }
 }
 
@@ -40,7 +40,7 @@ variable "insufficient_data_actions" {
 
 variable "memory_utilization_alarm_parameters" {
   type        = object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })
-  description = "An object containing the parameters for the memory utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = \"Maximum\", threshold = 90.0}).  For an explanation of the parameters please see https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html.  The default is to alarm after 30 straight minutes of over 90% memory utilization."
+  description = "An object containing the parameters for the memory utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = \"Maximum\", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm after 30 straight minutes of over 90% memory utilization."
   default     = { create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = "Maximum", threshold = 90.0 }
 }
 
