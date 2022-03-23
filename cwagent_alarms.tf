@@ -1,5 +1,8 @@
 # ------------------------------------------------------------------------------
 # Create a set of standard CloudWatch alarms for an EC2 instance.
+# These alarms are based on metrics that come from the CloudWatch
+# agent running on the instance (i.e., from the CWAgent metric
+# namespace).
 # ------------------------------------------------------------------------------
 
 # Alarm for memory utilization.

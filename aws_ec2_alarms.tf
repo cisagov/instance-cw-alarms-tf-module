@@ -1,5 +1,7 @@
 # ------------------------------------------------------------------------------
 # Create a set of standard CloudWatch alarms for an EC2 instance.
+# These alarms are based on the "automatic" metrics that come from the
+# AWS EC2 managed service (i.e., from the AWS/EC2 metric namespace).
 # ------------------------------------------------------------------------------
 
 # Alarm if a system status check ever fails.
