@@ -2,17 +2,8 @@
 
 [![GitHub Build Status](https://github.com/cisagov/instance-cw-alarms-tf-module/workflows/build/badge.svg)](https://github.com/cisagov/instance-cw-alarms-tf-module/actions)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) [Terraform
-module](https://www.terraform.io/docs/modules/index.html) GitHub
-repository started.  This skeleton project contains [licensing
-information](LICENSE), as well as [pre-commit
-hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for the major languages that we use.
-
-See [here](https://www.terraform.io/docs/modules/index.html) for more
-details on Terraform modules and the standard module structure.
+A Terraform module for creating a set of standard CloudWatch alarms
+for EC2 instances.
 
 ## Usage ##
 
@@ -20,9 +11,10 @@ details on Terraform modules and the standard module structure.
 module "example" {
   source = "github.com/cisagov/instance-cw-alarms-tf-module"
 
-  aws_region            = "us-west-1"
-  aws_availability_zone = "b"
-  subnet_id             = "subnet-0123456789abcdef0"
+  alarm_actions             = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
+  instance_ids              = ["id-0123456789abcdef0", "id-0123456789abcdef1"]
+  insufficient_data_actions = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
+  ok_actions                = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
 }
 ```
 
@@ -51,41 +43,51 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [aws_instance.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
-| [aws_ami.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
-| [aws_default_tags.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/default_tags) | data source |
+| [aws_cloudwatch_metric_alarm.bw_in_allowance_exceeded](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.bw_out_allowance_exceeded](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.conntrack_allowance_exceeded](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.cpu_utilization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.disk_utilization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.imdsv1_request](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.instance_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.linklocal_allowance_exceeded](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.memory_utilization](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.pps_allowance_exceeded](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
+| [aws_cloudwatch_metric_alarm.system_status_check](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_metric_alarm) | resource |
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| ami\_owner\_account\_id | The ID of the AWS account that owns the Example AMI, or "self" if the AMI is owned by the same account as the provisioner. | `string` | `"self"` | no |
-| aws\_availability\_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.). | `string` | `"a"` | no |
-| aws\_region | The AWS region to deploy into (e.g. us-east-1). | `string` | `"us-east-1"` | no |
-| subnet\_id | The ID of the AWS subnet to deploy into (e.g. subnet-0123456789abcdef0). | `string` | n/a | yes |
+| alarm\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the ALARM state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
+| cpu\_utilization\_alarm\_parameters | An object containing the parameters for the CPU utilization alarm (e.g. {create\_alarm = true, datapoints\_to\_alarm = 6, evaluation\_periods = 6, period = 300, statistic = "Maximum", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm after 30 straight minutes of over 90% CPU utilization. | `object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })` | ```{ "create_alarm": true, "datapoints_to_alarm": 6, "evaluation_periods": 6, "period": 300, "statistic": "Maximum", "threshold": 90 }``` | no |
+| disk\_utilization\_alarm\_parameters | An object containing the parameters for the disk utilization alarm (e.g. {create\_alarm = true, datapoints\_to\_alarm = 1, evaluation\_periods = 1, period = 60, statistic = "Maximum", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm for greater than 90% disk utilization. | `object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })` | ```{ "create_alarm": true, "datapoints_to_alarm": 1, "evaluation_periods": 1, "period": 300, "statistic": "Maximum", "threshold": 90 }``` | no |
+| instance\_ids | A list of AWS EC2 instance IDs that are to be monitored (e.g. [id-0123456789abcdef0, id-0123456789abcdef1]). | `list(string)` | n/a | yes |
+| insufficient\_data\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the INSUFFICIENT\_DATA state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
+| memory\_utilization\_alarm\_parameters | An object containing the parameters for the memory utilization alarm (e.g. {create\_alarm = true, datapoints\_to\_alarm = 6, evaluation\_periods = 6, period = 300, statistic = "Maximum", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm after 30 straight minutes of over 90% memory utilization. | `object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })` | ```{ "create_alarm": true, "datapoints_to_alarm": 6, "evaluation_periods": 6, "period": 300, "statistic": "Maximum", "threshold": 90 }``` | no |
+| ok\_actions | A list of AWS ARNs corresponding to actions to be taken when a CloudWatch alarm transitions to the OK state from any other state (e.g. [arn:aws:sns:us-east-1:111122223333:my-topic]). | `list(string)` | `[]` | no |
 
 ## Outputs ##
 
 | Name | Description |
 |------|-------------|
-| arn | The EC2 instance ARN. |
-| availability\_zone | The AZ where the EC2 instance is deployed. |
-| id | The EC2 instance ID. |
-| private\_ip | The private IP of the EC2 instance. |
-| subnet\_id | The ID of the subnet where the EC2 instance is deployed. |
+| conntrack\_allowance\_exceeded | CloudWatch alarms that trigger when the connection tracking allowance is exceeded. |
+| cpu\_utilization | CloudWatch alarms that monitor EC2 CPU utilization. |
+| disk\_utilization | CloudWatch alarms that monitor EC2 disk utilization. |
+| imdsv1\_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
+| inbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the inbound bandwidth allowance is exceeded. |
+| instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
+| linklocal\_allowance\_exceeded | CloudWatch alarms that trigger when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service. |
+| memory\_utilization | CloudWatch alarms that monitor EC2 memory utilization. |
+| outbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the outbound bandwidth allowance is exceeded. |
+| pps\_allowance\_exceeded | CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded. |
+| system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 
 ## Notes ##
 
 Running `pre-commit` requires running `terraform init` in every directory that
 contains Terraform code. In this repository, these are the main directory and
 every directory under `examples/`.
-
-## New Repositories from a Skeleton ##
-
-Please see our [Project Setup guide](https://github.com/cisagov/development-guide/tree/develop/project_setup)
-for step-by-step instructions on how to start a new repository from
-a skeleton. This will save you time and effort when configuring a
-new repository!
 
 ## Contributing ##
 

@@ -1,4 +1,4 @@
-# Launch an example EC2 instance in a new VPC #
+# Create Alarms for an Instance #
 
 ## Usage ##
 
@@ -25,21 +25,20 @@ Note that this example may create resources which cost money. Run
 
 | Name | Source | Version |
 |------|--------|---------|
-| example | ../../ | n/a |
+| alarms | ../../ | n/a |
 
 ## Resources ##
 
 | Name | Type |
 |------|------|
-| [aws_subnet.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
-| [aws_vpc.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [aws_instance.mine](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
+| [aws_sns_topic.alarm_updates](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| ami\_owner\_account\_id | The ID of the AWS account that owns the AMI, or "self" if the AMI is owned by the same account as the provisioner. | `string` | `"self"` | no |
-| aws\_availability\_zone | The AWS availability zone to deploy into (e.g. a, b, c, etc.). | `string` | `"a"` | no |
 | aws\_region | The AWS region to deploy into (e.g. us-east-1). | `string` | `"us-east-1"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | ```{ "Testing": true }``` | no |
 | tf\_role\_arn | The ARN of the role that can terraform non-specialized resources. | `string` | n/a | yes |
@@ -48,8 +47,16 @@ Note that this example may create resources which cost money. Run
 
 | Name | Description |
 |------|-------------|
-| arn | The EC2 instance ARN. |
-| availability\_zone | The AZ where the EC2 instance is deployed. |
-| id | The EC2 instance ID. |
-| private\_ip | The private IP of the EC2 instance. |
-| subnet\_id | The ID of the subnet where the EC2 instance is deployed. |
+| conntrack\_allowance\_exceeded | CloudWatch alarms that trigger when the connection tracking allowance is exceeded. |
+| cpu\_utilization | CloudWatch alarms that monitor EC2 CPU utilization. |
+| disk\_utilization | CloudWatch alarms that monitor EC2 disk utilization. |
+| imdsv1\_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
+| inbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the inbound bandwidth allowance is exceeded. |
+| instance | The EC2 instance. |
+| instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
+| linklocal\_allowance\_exceeded | CloudWatch alarms that trigger when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service. |
+| memory\_utilization | CloudWatch alarms that monitor EC2 memory utilization. |
+| outbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the outbound bandwidth allowance is exceeded. |
+| pps\_allowance\_exceeded | CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded. |
+| system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
+| topic | The SNS topic. |
