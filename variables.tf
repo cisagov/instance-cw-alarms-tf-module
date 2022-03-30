@@ -28,7 +28,7 @@ variable "cpu_utilization_alarm_parameters" {
 
 variable "create_cloudwatch_agent_alarms" {
   type        = bool
-  description = "A Boolean value indicating whether or not to create alarms based on CloudWatch metrics written by the CloudWatch Agent.  You will generally want this variable to be set to true."
+  description = "A Boolean value indicating whether or not to create alarms based on CloudWatch metrics written by the CloudWatch Agent.  You will generally want this variable to be set to true; it should only be set to false for instances which are not running the CloudWatch Agent."
   default     = true
 }
 
