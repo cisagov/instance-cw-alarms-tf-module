@@ -9,56 +9,44 @@
 resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
   for_each = var.memory_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
-  alarm_actions             = var.alarm_actions
-  alarm_description         = "Monitor EC2 instance memory utilization"
-  alarm_name                = "ec2_memory_utilization_${each.value}"
-  comparison_operator       = "GreaterThanThreshold"
-  datapoints_to_alarm       = var.memory_utilization_alarm_parameters.datapoints_to_alarm
+  alarm_actions       = var.alarm_actions
+  alarm_description   = "Monitor EC2 instance memory utilization"
+  alarm_name          = "ec2_memory_utilization_${each.value}"
+  comparison_operator = "GreaterThanThreshold"
+  datapoints_to_alarm = var.memory_utilization_alarm_parameters.datapoints_to_alarm
+  dimensions = {
+    InstanceId = each.value
+  }
   evaluation_periods        = var.memory_utilization_alarm_parameters.evaluation_periods
   insufficient_data_actions = var.insufficient_data_actions
-  metric_query {
-    id = "memory_utilization"
-    metric {
-      dimensions = {
-        InstanceId = each.value
-      }
-      metric_name = "mem_used_percent"
-      namespace   = "CWAgent"
-      period      = var.memory_utilization_alarm_parameters.period
-      stat        = var.memory_utilization_alarm_parameters.statistic
-    }
-    return_data = true
-  }
-  ok_actions = var.ok_actions
-  threshold  = var.memory_utilization_alarm_parameters.threshold
+  metric_name               = "mem_used_percent"
+  namespace                 = "CWAgent"
+  period                    = var.memory_utilization_alarm_parameters.period
+  statistic                 = var.memory_utilization_alarm_parameters.statistic
+  ok_actions                = var.ok_actions
+  threshold                 = var.memory_utilization_alarm_parameters.threshold
 }
 
 # Alarm for disk utilization.
 resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
   for_each = var.disk_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
 
-  alarm_actions             = var.alarm_actions
-  alarm_description         = "Monitor EC2 instance disk utilization"
-  alarm_name                = "ec2_disk_utilization_${each.key}"
-  comparison_operator       = "GreaterThanThreshold"
-  datapoints_to_alarm       = var.disk_utilization_alarm_parameters.datapoints_to_alarm
+  alarm_actions       = var.alarm_actions
+  alarm_description   = "Monitor EC2 instance disk utilization"
+  alarm_name          = "ec2_disk_utilization_${each.key}"
+  comparison_operator = "GreaterThanThreshold"
+  datapoints_to_alarm = var.disk_utilization_alarm_parameters.datapoints_to_alarm
+  dimensions = {
+    InstanceId = each.value
+  }
   evaluation_periods        = var.disk_utilization_alarm_parameters.evaluation_periods
   insufficient_data_actions = var.insufficient_data_actions
-  metric_query {
-    id = "disk_utilization"
-    metric {
-      dimensions = {
-        InstanceId = each.value
-      }
-      metric_name = "disk_used_percent"
-      namespace   = "CWAgent"
-      period      = var.disk_utilization_alarm_parameters.period
-      stat        = var.disk_utilization_alarm_parameters.statistic
-    }
-    return_data = true
-  }
-  ok_actions = var.ok_actions
-  threshold  = var.disk_utilization_alarm_parameters.threshold
+  metric_name               = "disk_used_percent"
+  namespace                 = "CWAgent"
+  period                    = var.disk_utilization_alarm_parameters.period
+  statistic                 = var.disk_utilization_alarm_parameters.statistic
+  ok_actions                = var.ok_actions
+  threshold                 = var.disk_utilization_alarm_parameters.threshold
 }
 
 # Alarm each time any packets are queued and/or dropped because the
