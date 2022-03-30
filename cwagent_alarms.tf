@@ -7,7 +7,7 @@
 
 # Alarm for memory utilization.
 resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
-  for_each = var.memory_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
+  for_each = var.memory_utilization_alarm_parameters.create_alarm && var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions       = var.alarm_actions
   alarm_description   = "Monitor EC2 instance memory utilization"
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_utilization" {
 
 # Alarm for disk utilization.
 resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
-  for_each = var.disk_utilization_alarm_parameters.create_alarm ? toset(var.instance_ids) : toset([])
+  for_each = var.disk_utilization_alarm_parameters.create_alarm && var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions       = var.alarm_actions
   alarm_description   = "Monitor EC2 instance disk utilization"
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "disk_utilization" {
 # Alarm each time any packets are queued and/or dropped because the
 # inbound aggregate bandwidth exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
-  for_each = toset(var.instance_ids)
+  for_each = var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance inbound bandwidth allowance"
@@ -85,7 +85,7 @@ resource "aws_cloudwatch_metric_alarm" "bw_in_allowance_exceeded" {
 # Alarm each time any packets are queued and/or dropped because the
 # outbound aggregate bandwidth exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
-  for_each = toset(var.instance_ids)
+  for_each = var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance outbound bandwidth allowance"
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_metric_alarm" "bw_out_allowance_exceeded" {
 # exceeded the maximum for the instance and new connections could not
 # be established.
 resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
-  for_each = toset(var.instance_ids)
+  for_each = var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance conntrack allowance"
@@ -154,7 +154,7 @@ resource "aws_cloudwatch_metric_alarm" "conntrack_allowance_exceeded" {
 # interface. This impacts traffic to the DNS service, the Instance
 # Metadata Service, and the Amazon Time Sync Service.
 resource "aws_cloudwatch_metric_alarm" "linklocal_allowance_exceeded" {
-  for_each = toset(var.instance_ids)
+  for_each = var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance linklocal allowance"
@@ -187,7 +187,7 @@ resource "aws_cloudwatch_metric_alarm" "linklocal_allowance_exceeded" {
 # Alarm each time any packets are queued and/or dropped because the
 # bidirectional PPS exceeded the maximum for the instance.
 resource "aws_cloudwatch_metric_alarm" "pps_allowance_exceeded" {
-  for_each = toset(var.instance_ids)
+  for_each = var.create_cloudwatch_agent_alarms ? toset(var.instance_ids) : toset([])
 
   alarm_actions             = var.alarm_actions
   alarm_description         = "Monitor EC2 instance PPS allowance"

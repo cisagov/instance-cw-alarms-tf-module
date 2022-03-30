@@ -26,6 +26,12 @@ variable "cpu_utilization_alarm_parameters" {
   default     = { create_alarm = true, datapoints_to_alarm = 6, evaluation_periods = 6, period = 300, statistic = "Maximum", threshold = 90.0 }
 }
 
+variable "create_cloudwatch_agent_alarms" {
+  type        = bool
+  description = "A Boolean value indicating whether or not to create alarms based on CloudWatch metrics written by the CloudWatch Agent.  You will generally want this variable to be set to true."
+  default     = true
+}
+
 variable "disk_utilization_alarm_parameters" {
   type        = object({ create_alarm = bool, datapoints_to_alarm = number, evaluation_periods = number, period = number, statistic = string, threshold = number })
   description = "An object containing the parameters for the disk utilization alarm (e.g. {create_alarm = true, datapoints_to_alarm = 1, evaluation_periods = 1, period = 60, statistic = \"Maximum\", threshold = 90.0}).  See [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html) for an explanation of the parameters.  The default is to alarm for greater than 90% disk utilization."
