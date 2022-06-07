@@ -4,7 +4,8 @@
 # AWS EC2 managed service (i.e., from the AWS/EC2 metric namespace).
 # ------------------------------------------------------------------------------
 
-# Alarm if a system status check ever fails.
+# Alarm if a system status check ever fails for at least five minutes
+# straight.
 resource "aws_cloudwatch_metric_alarm" "system_status_check" {
   for_each = toset(var.instance_ids)
 
@@ -15,17 +16,18 @@ resource "aws_cloudwatch_metric_alarm" "system_status_check" {
   dimensions = {
     InstanceId = each.value
   }
-  evaluation_periods        = 1
+  evaluation_periods        = 5
   insufficient_data_actions = var.insufficient_data_actions
   metric_name               = "StatusCheckFailed_System"
   namespace                 = "AWS/EC2"
   ok_actions                = var.ok_actions
   period                    = 60
   statistic                 = "Maximum"
-  threshold                 = 0
+  threshold                 = 5
 }
 
-# Alarm if an instance status check ever fails.
+# Alarm if an instance status check ever fails for at least five
+# minutes straight.
 resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
   for_each = toset(var.instance_ids)
 
@@ -36,14 +38,14 @@ resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
   dimensions = {
     InstanceId = each.value
   }
-  evaluation_periods        = 1
+  evaluation_periods        = 5
   insufficient_data_actions = var.insufficient_data_actions
   metric_name               = "StatusCheckFailed_Instance"
   namespace                 = "AWS/EC2"
   ok_actions                = var.ok_actions
   period                    = 60
   statistic                 = "Maximum"
-  threshold                 = 0
+  threshold                 = 5
 }
 
 # Alarm if an IMDSv1 request ever succeeds.
