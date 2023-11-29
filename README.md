@@ -22,18 +22,19 @@ module "example" {
 
 - [Basic usage](https://github.com/cisagov/instance-cw-alarms-tf-module/tree/develop/examples/basic_usage)
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 3.38 |
+| aws | ~> 4.9 |
 
 ## Modules ##
 
@@ -83,6 +84,7 @@ No modules.
 | outbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the outbound bandwidth allowance is exceeded. |
 | pps\_allowance\_exceeded | CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
+<!-- END_TF_DOCS -->
 
 ## Notes ##
 
