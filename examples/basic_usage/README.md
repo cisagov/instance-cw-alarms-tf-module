@@ -8,18 +8,19 @@ followed by the `terraform apply` command.
 Note that this example may create resources which cost money. Run
 `terraform destroy` when you no longer need these resources.
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements ##
 
 | Name | Version |
 |------|---------|
 | terraform | ~> 1.0 |
-| aws | ~> 4.9 |
+| aws | ~> 5.0 |
 
 ## Providers ##
 
 | Name | Version |
 |------|---------|
-| aws | ~> 4.9 |
+| aws | ~> 5.0 |
 
 ## Modules ##
 
@@ -60,3 +61,4 @@ Note that this example may create resources which cost money. Run
 | pps\_allowance\_exceeded | CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded. |
 | system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
 | topic | The SNS topic. |
+<!-- END_TF_DOCS -->
