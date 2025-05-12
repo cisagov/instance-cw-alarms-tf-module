@@ -6,6 +6,7 @@
 
 variable "tf_role_arn" {
   description = "The ARN of the role that can terraform non-specialized resources."
+  nullable    = false
   type        = string
 }
 
@@ -18,6 +19,7 @@ variable "tf_role_arn" {
 variable "aws_region" {
   default     = "us-east-1"
   description = "The AWS region to deploy into (e.g. us-east-1)."
+  nullable    = false
   type        = string
 }
 
@@ -26,5 +28,6 @@ variable "tags" {
     Testing = true
   }
   description = "Tags to apply to all AWS resources created."
+  nullable    = false
   type        = map(string)
 }
