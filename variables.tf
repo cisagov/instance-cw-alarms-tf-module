@@ -4,10 +4,10 @@
 # You must provide a value for each of these parameters.
 # ------------------------------------------------------------------------------
 
-variable "instance_ids" {
-  description = "A list of AWS EC2 instance IDs that are to be monitored (e.g. [id-0123456789abcdef0, id-0123456789abcdef1])."
+variable "instance_id" {
+  description = "The ID of the AWS EC2 instance that is to be monitored (e.g. id-0123456789abcdef0)."
   nullable    = false
-  type        = list(string)
+  type        = string
 }
 
 # ------------------------------------------------------------------------------

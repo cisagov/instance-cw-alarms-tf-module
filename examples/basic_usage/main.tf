@@ -52,7 +52,7 @@ module "alarms" {
   }
 
   alarm_actions             = [aws_sns_topic.alarm_updates.arn]
-  instance_ids              = [aws_instance.mine.id]
+  instance_id               = aws_instance.mine.id
   insufficient_data_actions = [aws_sns_topic.alarm_updates.arn]
   ok_actions                = [aws_sns_topic.alarm_updates.arn]
 }

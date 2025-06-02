@@ -48,17 +48,17 @@ Note that this example may create resources which cost money. Run
 
 | Name | Description |
 |------|-------------|
-| conntrack\_allowance\_exceeded | CloudWatch alarms that trigger when the connection tracking allowance is exceeded. |
-| cpu\_utilization | CloudWatch alarms that monitor EC2 CPU utilization. |
-| disk\_utilization | CloudWatch alarms that monitor EC2 disk utilization. |
-| imdsv1\_request | CloudWatch alarms that trigger on EC2 IMDSv1 requests. |
-| inbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the inbound bandwidth allowance is exceeded. |
+| conntrack\_allowance\_exceeded | A CloudWatch alarm that triggers when the connection tracking allowance is exceeded. |
+| cpu\_utilization | A CloudWatch alarm that monitors EC2 CPU utilization. |
+| disk\_utilization | A CloudWatch alarm that monitors EC2 disk utilization. |
+| imdsv1\_request | A CloudWatch alarm that triggers on EC2 IMDSv1 requests. |
+| inbound\_bandwidth\_allowance\_exceeded | A CloudWatch alarm that triggers when the inbound bandwidth allowance is exceeded. |
 | instance | The EC2 instance. |
-| instance\_status\_check | CloudWatch alarms that monitor EC2 instance status checks. |
-| linklocal\_allowance\_exceeded | CloudWatch alarms that trigger when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service. |
-| memory\_utilization | CloudWatch alarms that monitor EC2 memory utilization. |
-| outbound\_bandwidth\_allowance\_exceeded | CloudWatch alarms that trigger when the outbound bandwidth allowance is exceeded. |
-| pps\_allowance\_exceeded | CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded. |
-| system\_status\_check | CloudWatch alarms that monitor EC2 system status checks. |
+| instance\_status\_check | A CloudWatch alarm that monitors EC2 instance status checks. |
+| linklocal\_allowance\_exceeded | A CloudWatch alarm that triggers when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service. |
+| memory\_utilization | A CloudWatch alarm that monitors EC2 memory utilization. |
+| outbound\_bandwidth\_allowance\_exceeded | A CloudWatch alarm that triggers when the outbound bandwidth allowance is exceeded. |
+| pps\_allowance\_exceeded | A CloudWatch alarm that triggers when the overall packets-per-second allowance is exceeded. |
+| system\_status\_check | A CloudWatch alarm that monitors EC2 system status checks. |
 | topic | The SNS topic. |
 <!-- END_TF_DOCS -->
