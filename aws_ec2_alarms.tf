@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "instance_status_check" {
 
 # Alarm if an IMDSv1 request ever succeeds.
 #
-# This alarm should never go off if all instances are correctly
+# This alarm should never go off if the instance is correctly
 # configured to use IMDSv2 only.
 resource "aws_cloudwatch_metric_alarm" "imdsv1_request" {
   alarm_actions       = var.alarm_actions
