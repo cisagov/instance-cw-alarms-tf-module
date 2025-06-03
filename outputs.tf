@@ -1,54 +1,54 @@
 output "conntrack_allowance_exceeded" {
-  description = "CloudWatch alarms that trigger when the connection tracking allowance is exceeded."
+  description = "A CloudWatch alarm that triggers when the connection tracking allowance is exceeded."
   value       = aws_cloudwatch_metric_alarm.conntrack_allowance_exceeded
 }
 
 output "cpu_utilization" {
-  description = "CloudWatch alarms that monitor EC2 CPU utilization."
+  description = "A CloudWatch alarm that monitors EC2 CPU utilization."
   value       = aws_cloudwatch_metric_alarm.cpu_utilization
 }
 
 output "disk_utilization" {
-  description = "CloudWatch alarms that monitor EC2 disk utilization."
+  description = "A CloudWatch alarm that monitors EC2 disk utilization."
   value       = aws_cloudwatch_metric_alarm.disk_utilization
 }
 
 output "imdsv1_request" {
-  description = "CloudWatch alarms that trigger on EC2 IMDSv1 requests."
+  description = "A CloudWatch alarm that triggers on EC2 IMDSv1 requests."
   value       = aws_cloudwatch_metric_alarm.imdsv1_request
 }
 
 output "inbound_bandwidth_allowance_exceeded" {
-  description = "CloudWatch alarms that trigger when the inbound bandwidth allowance is exceeded."
+  description = "A CloudWatch alarm that triggers when the inbound bandwidth allowance is exceeded."
   value       = aws_cloudwatch_metric_alarm.bw_in_allowance_exceeded
 }
 
 output "instance_status_check" {
-  description = "CloudWatch alarms that monitor EC2 instance status checks."
+  description = "A CloudWatch alarm that monitors EC2 instance status checks."
   value       = aws_cloudwatch_metric_alarm.instance_status_check
 }
 
 output "linklocal_allowance_exceeded" {
-  description = "CloudWatch alarms that trigger when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service."
+  description = "A CloudWatch alarm that triggers when the linklocal packets-per-second allowance is exceeded.  This allowance impacts traffic to the DNS service, the Instance Metadata Service, and the Amazon Time Sync Service."
   value       = aws_cloudwatch_metric_alarm.linklocal_allowance_exceeded
 }
 
 output "memory_utilization" {
-  description = "CloudWatch alarms that monitor EC2 memory utilization."
+  description = "A CloudWatch alarm that monitors EC2 memory utilization."
   value       = aws_cloudwatch_metric_alarm.memory_utilization
 }
 
 output "outbound_bandwidth_allowance_exceeded" {
-  description = "CloudWatch alarms that trigger when the outbound bandwidth allowance is exceeded."
+  description = "A CloudWatch alarm that triggers when the outbound bandwidth allowance is exceeded."
   value       = aws_cloudwatch_metric_alarm.bw_out_allowance_exceeded
 }
 
 output "pps_allowance_exceeded" {
-  description = "CloudWatch alarms that trigger when the overall packets-per-second allowance is exceeded."
+  description = "A CloudWatch alarm that triggers when the overall packets-per-second allowance is exceeded."
   value       = aws_cloudwatch_metric_alarm.pps_allowance_exceeded
 }
 
 output "system_status_check" {
-  description = "CloudWatch alarms that monitor EC2 system status checks."
+  description = "A CloudWatch alarm that monitors EC2 system status checks."
   value       = aws_cloudwatch_metric_alarm.system_status_check
 }
