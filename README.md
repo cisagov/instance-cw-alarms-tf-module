@@ -9,7 +9,7 @@ for EC2 instances.
 
 ```hcl
 module "example" {
-  source = "github.com/cisagov/instance-cw-alarms-tf-module"
+  source = "github.com/cisagov/instance-cw-alarms-tf-module?ref=v2.0.0"
 
   alarm_actions             = ["arn:aws:sns:us-east-1:111122223333:my-topic"]
   instance_id               = "id-0123456789abcdef0"
