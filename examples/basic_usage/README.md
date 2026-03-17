@@ -12,26 +12,26 @@ Note that this example may create resources which cost money. Run
 ## Requirements ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | terraform | ~> 1.1 |
 | aws | ~> 6.7 |
 
 ## Providers ##
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | aws | ~> 6.7 |
 
 ## Modules ##
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | alarms | ../../ | n/a |
 
 ## Resources ##
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_instance.mine](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) | resource |
 | [aws_sns_topic.alarm_updates](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
@@ -39,7 +39,7 @@ Note that this example may create resources which cost money. Run
 ## Inputs ##
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | aws\_region | The AWS region to deploy into (e.g. us-east-1). | `string` | `"us-east-1"` | no |
 | tags | Tags to apply to all AWS resources created. | `map(string)` | ```{ "Testing": true }``` | no |
 | tf\_role\_arn | The ARN of the role that can terraform non-specialized resources. | `string` | n/a | yes |
@@ -47,7 +47,7 @@ Note that this example may create resources which cost money. Run
 ## Outputs ##
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | conntrack\_allowance\_exceeded | A CloudWatch alarm that triggers when the connection tracking allowance is exceeded. |
 | cpu\_utilization | A CloudWatch alarm that monitors EC2 CPU utilization. |
 | disk\_utilization | A CloudWatch alarm that monitors EC2 disk utilization. |
